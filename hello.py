@@ -41,9 +41,8 @@ def p():
 
 @app.route("/prime/<int:number>")
 def prime(number):
-    if type(number) == int:
-        return {"Is prime": is_prime(number)}
-    return {'input': 'invalid'}
+    return {"Is prime": is_prime(number)}
+
 
 
 @app.route("/im_size", methods=["POST"])
@@ -94,4 +93,3 @@ def inv(file):
 def index():
     t = time.localtime()
     return {"time": time.strftime("%H:%M:%S", t)}
-
