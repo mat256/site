@@ -8,13 +8,11 @@ from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 import os, io, base64
 
-
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 IMG_FOLDER = os.path.join('static', 'IMG')
 app.config['UPLOAD_FOLDER'] = IMG_FOLDER
-
 
 users = {
     "john": generate_password_hash("hello"),
@@ -38,12 +36,14 @@ def hello_world():
 def p():
     full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'most.jpg')
     return render_template("show.html", image=full_filename)
-    #return "<p>Hello</p>"
+    # return "<p>Hello</p>"
 
 
 @app.route("/prime/<int:number>")
 def prime(number):
-    return {"Is prime": is_prime(number)}
+    if type(number) == int:
+        return {"Is prime": is_prime(number)}
+    return {'input': 'invalid'}
 
 
 @app.route("/im_size", methods=["POST"])
@@ -62,7 +62,7 @@ def pic():
 @app.route('/picture', methods=['POST'])
 def submit_file():
     file1 = request.files['file']
-    #Read the image via file.stream
+    # Read the image via file.stream
     img = Image.open(file1.stream)
     img = ImageChops.invert(img)
 
@@ -73,8 +73,8 @@ def submit_file():
     img_data = f"data:image/jpeg;base64,{decoded_img}"
     return render_template("show.html", img_data=img_data)
 
-    #return jsonify({'msg': 'success', 'size': [img.width, img.height]})
-    #return render_template("show.html", image=file1)
+    # return jsonify({'msg': 'success', 'size': [img.width, img.height]})
+    # return render_template("show.html", image=file1)
     # return redirect('/picture/invert')
     # return redirect(url_for('inv', file=file1))
 
@@ -94,3 +94,4 @@ def inv(file):
 def index():
     t = time.localtime()
     return {"time": time.strftime("%H:%M:%S", t)}
+
