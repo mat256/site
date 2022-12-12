@@ -41,9 +41,13 @@ def p():
 
 @app.route("/prime/<number>")
 def prime(number):
-    if type(number)==int:
+    #if type(number)==int:
+    try:
+        number=int(number)
         return {"Is prime": is_prime(number)}
-    return {'input':'invalid'}
+    #print(type(number))
+    except:
+        return {'input':'invalid'}
 
 
 
